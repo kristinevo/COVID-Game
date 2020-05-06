@@ -16,7 +16,6 @@ public class GameHandler : MonoBehaviour
     private void Update()
     {
         //place holder but we can make a function for happiness based on other variables
-
         print(Time.time);
         if (Time.time > nextActionTime)
         {
