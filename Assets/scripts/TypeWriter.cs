@@ -6,7 +6,7 @@ public class TypeWriter : MonoBehaviour
 {
     Text txt;
     string story;
-    public void callText(Text t)
+    public void CallText(Text t)
     {
         txt = t;
         story = txt.text;
