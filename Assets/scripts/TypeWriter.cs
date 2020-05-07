@@ -6,10 +6,9 @@ public class TypeWriter : MonoBehaviour
 {
     Text txt;
     string story;
-    void Start()
+    public void callText(Text t)
     {
-        print("BU");
-        txt = GetComponent<Text>();
+        txt = t;
         story = txt.text;
         txt.text = "";
         StartCoroutine(TypeOut());
