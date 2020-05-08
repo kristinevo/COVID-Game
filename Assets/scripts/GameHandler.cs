@@ -1,97 +1,106 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
  
 
 public class GameHandler : MonoBehaviour
 {
-    [SerializeField] private Happiness_Bar happyBar;
+	//[SerializeField] private Happiness_Bar happyBar;
+	public Text day_Text;
+	public Text infected_Text;
+	public Text money_Text;
+	public Button TV;
+	public Button phone;
+	public Button sleep;
+	public Button bills;
+	public Button fridge;
+	public Image bill_notif;
+	public Camera cam;
 
-    private float nextActionTime = 0.0f;
+	private static int days = 0;
+	private static int infected = 738400;
+	private static int money = 1500;
+	private static int hoursInADay = 24;
+	private int friendOut = 2;
+	private int calledFamily = 1;
+	private int familyHappiness = 0;
+	private static int amountOfSleep = 8;
+	private static int breakTaken = 2;
+	private float time;
+	float happiness = 1f;
+	
 
-    public Text day_Text;
-    public Text infected_Text;
-    public Text money_Text;
-    public Button TV;
-    public Button phone;
-    public Button sleep;
-    public Button bills;
-    public Button fridge;
-    public Image bill_notif;
+	void Start()
+	{
+		Clicked();	
+	}
 
-    private int days = 0;
-    private int infected = 4570;
-    private int money = 1500;
-    public float period = .01f;
-    //day starts at 9
-    private int hoursInADay = 24;
-    private int friendOut = 0;
-    private int calledFamily = 0;
-    private int familyHappiness = 0;
-    private int amountOfSleep = 8;
-    private int breakTaken = 0;
-    float happiness = 1f;
-    
+	private void Update()
+	{
+			//happiness = (calledFamily * .2f + breakTaken * .3f) * (amountOfSleep * .5f);
+			//happyBar.SetSize(happiness);
+			day_Text.text = "Days in Quarantine: " + days.ToString();
+			infected_Text.text = "Infected/Healthcare Capacity: " + (infected - 2) + "/738,401";
+			money_Text.text = "Money: " + money;
+		
+	}
 
-    void Start()
-    {
-        System.Random r = new System.Random();
-        happyBar.SetSize(happiness);
-        day_Text.text = "Days in Quarantine: " + days;
-        infected_Text.text = "Infected/Healthcare Capacity: " + infected + "/738,401";
-        money_Text.text = "Money: " + money;
-        
-        sleep.onClick.AddListener(()=>{
-            hoursInADay = 24;
-            if (amountOfSleep < 7 && r.NextDouble() > .5)
-            {
-                hoursInADay -= 8;
-                //miss class add a pop up and reduce happiness by a constant
-                happiness -= .2f;
-                IncrementDay();
-            }
-        });
+	public void Clicked()
+	{
+		sleep.onClick.AddListener(() => {
 
-    }
+			hoursInADay -= 8;
+			Infected(8);
+			check();
 
-    private void Update()
-    {
-        //place holder but we can make a function for happiness based on other variables
-        if(days/14 == 0)
-        {
-            money += 1200;
-        }
+		});
 
-        if(days/30 <= 0 && days > 3)
-        {
-            bill_notif.enabled = true;
-        }
+		phone.onClick.AddListener(() => {
+			hoursInADay -= 2;
+			calledFamily++;
+			Infected(2);
+			check();
+		});
 
-        if (Time.time > nextActionTime)
-        {
-            nextActionTime = Time.time + period;
-            if (happiness > 0)
-            {
-                happiness = (calledFamily + breakTaken) * amountOfSleep;
-                happyBar.SetSize(happiness);
-                
+		TV.onClick.AddListener(() => {
+			hoursInADay -= 2;
+			breakTaken++;
+			Infected(2);
+			check();
+		});
 
+		bills.onClick.AddListener(() => {
+			money -= 1000;
+			check();
+		});
+	}
 
+	public void check()
+	{
+		if (days % 14 == 0 && days != 0)
+		{
+			money += 1200;
+		}
+		if (hoursInADay == 0)
+		{
+			hoursInADay = 24;
+			IncrementDay();
+		}
 
+		if (infected > 738401)
+		{
+			SceneManager.LoadScene("GAMEOVER");
+		}
+	}
 
+	public void Infected(int hours)
+	{
+		infected += (hours * 10);
+		infected += friendOut * 10;
+	}
 
-
-
-                day_Text.text = "Days in Quarantine: " + days;
-                infected_Text.text = "Infected/Healthcare Capacity: " + infected + "/738,401";
-                money_Text.text = "Money: " + money;
-                day_Text.text = "Days in Quarantine: " + days;
-
-            }
-        }        
-    }
-
-    public void IncrementDay()
-    {
-        days++;
-    }
+	public void IncrementDay()
+	{
+		days++;
+	}
 }

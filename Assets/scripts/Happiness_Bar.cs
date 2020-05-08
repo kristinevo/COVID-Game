@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Happiness_Bar : MonoBehaviour
 {
@@ -14,6 +12,13 @@ public class Happiness_Bar : MonoBehaviour
 
     public void SetSize(float sizeNormalized)
     {
-        happiness.localScale = new Vector3(sizeNormalized, 1f);
+        if (sizeNormalized > 1)
+        {
+            happiness.localScale = new Vector3(1, 1f);
+        }
+        else
+        {
+            happiness.localScale = new Vector3(sizeNormalized, 1f);
+        }
     }
 }
