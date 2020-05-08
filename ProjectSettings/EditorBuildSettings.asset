@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Introduction.unity
     guid: 9dbf5edb1e1fcb2498c20e48b57f9742
+  - enabled: 1
+    path: Assets/Scenes/Fridge.unity
+    guid: d1bcbb00f62d1e647bffacd98f35a800
+  - enabled: 1
+    path: Assets/Scenes/GAMEOVER.unity
+    guid: cc3c7008bd3d0054eba516c4b8f29159
   m_configObjects: {}
